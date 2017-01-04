@@ -1,0 +1,36 @@
+html, body {
+	min-height: 100%;
+}
+
+body {
+	background-color: green;
+	font-family: "Lucida Grande", sans-serif;
+}
+
+table {
+	border-collapse: collapse;
+	box-sizing: border-box;
+	min-width: 300px;
+	text-align: left;
+}
+
+.app {
+	display: flex;
+	margin: auto;
+	max-width: 800px;
+	text-align: center;
+	width: 60%;
+
+	& > * {
+		margin: 0 30px;
+		width: 50%;
+
+		&:first-child {
+			margin-left: 0;
+		}
+
+		&:last-child {
+			margin-right: 0;
+		}
+	}
+}

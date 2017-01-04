@@ -1,0 +1,59 @@
+.die {
+	background-color: #b00;
+	display: inline-block;
+	height: 50px;
+	margin-right: 10px;
+	position: relative;
+	width: 50px;
+
+	&:last-child {
+		margin-right: 0;
+	}
+
+	&--held {
+		background-color: #d00;
+	}
+}
+
+.die__dot {
+	background-color: white;
+	border-radius: 50%;
+	height: 8px;
+	position: absolute;
+		top: calc(50% - 4px);
+		left: calc(50% - 4px);
+	width: 8px;
+
+	&--top-left {
+		top: 10px;
+		left: 10px;
+	}
+
+	&--top-right {
+		top: 10px;
+		left: auto;
+		right: 10px;
+	}
+
+	&--center-left {
+		left: 10px;
+	}
+
+	&--center-right {
+		left: auto;
+		right: 10px;
+	}
+
+	&--bottom-left {
+		bottom: 10px;
+		top: auto;
+		left: 10px;
+	}
+
+	&--bottom-right {
+		bottom: 10px;
+		top: auto;
+		left: auto;
+		right: 10px;
+	}
+}

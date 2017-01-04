@@ -1,0 +1,17 @@
+.score {
+	background-color: rgba(255, 255, 255, 0.5);
+
+	&:nth-child(2n) {
+		background-color: rgba(255, 255, 255, 0.7);
+	}
+
+	td {
+		border: 1px solid black;
+		padding: 6px;
+	}
+}
+
+.score__score {
+	text-align: center;
+	width: 60px;
+}
