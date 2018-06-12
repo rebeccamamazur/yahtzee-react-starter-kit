@@ -1,0 +1,36 @@
+
+.scores__table {
+  background-color: white;
+  border-collapse: collapse;
+  color: black;
+  width: 100%;
+
+  td {
+    border: 1px solid darkgreen;
+    padding: 8px;
+  }
+
+  td:last-child {
+    width: 50px;
+  }
+
+  th {
+    background-color: lighten(green, 10);
+    border: 1px solid darkgreen;
+    color: white;
+    cursor: default;
+  }
+
+  tr {
+    cursor: pointer;
+
+    &.is-entered {
+      color: lighten(black, 70);
+      cursor: default;
+    }
+  }
+
+  tr:nth-child(2n) {
+    background-color: lighten(green, 70);
+  }
+}

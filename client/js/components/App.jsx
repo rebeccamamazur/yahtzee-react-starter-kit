@@ -2,6 +2,7 @@ import React from "react";
 
 import Button from "./Button/Button.jsx";
 import Dice from "./Dice/Dice.jsx";
+import Scores from "./Scores/Scores.jsx";
 
 export default class App extends React.Component {
 
@@ -37,7 +38,24 @@ export default class App extends React.Component {
         held: false
       }
     ],
-    scores: [],
+    scores: [
+      {
+        id: 1,
+        name: "Ones",
+        scoring: this.sumOfNums,
+        scoreParams: [1],
+        desc: "Sum of 1s",
+        value: ""
+      },
+      {
+        id: 1,
+        name: "Twos",
+        scoring: this.sumOfNums,
+        scoreParams: [2],
+        desc: "Sum of 2s",
+        value: ""
+      }
+    ],
     roll: -1
   };
 
@@ -92,13 +110,22 @@ export default class App extends React.Component {
     });
   }
 
+  handleScoreClick = (scoreInfo) => {
+    console.log("score clicked");
+  }
+
   render() {
-    let { dice } = this.state;
+    let { dice, scores } = this.state;
 
     return(
       <div className="playingboard">
-        <Dice dice={dice} handleDieHold={ this.handleDieHold } />
-        <Button buttonText="Roll" roll={ this.dieRoll } />
+        <div className="column">
+          <Dice dice={dice} handleDieHold={ this.handleDieHold } />
+          <Button buttonText="Roll" roll={ this.dieRoll } />
+        </div>
+        <div className="column">
+          <Scores scores={scores} handleScoreClick={ this.handleScoreClick } />
+        </div>
       </div>
     );
   }
