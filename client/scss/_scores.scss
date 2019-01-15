@@ -28,6 +28,11 @@
       color: lighten(black, 70);
       cursor: default;
     }
+
+    &.no-click {
+      color: black;
+      cursor: default;
+    }
   }
 
   tr:nth-child(2n) {

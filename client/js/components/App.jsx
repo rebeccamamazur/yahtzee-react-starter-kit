@@ -1,4 +1,6 @@
 import React from "react";
+import R from "ramda";
+import classNames from "classnames";
 
 import Button from "./Button/Button.jsx";
 import Dice from "./Dice/Dice.jsx";
@@ -42,17 +44,141 @@ export default class App extends React.Component {
       {
         id: 1,
         name: "Ones",
-        scoring: this.sumOfNums,
+        scoring: "sumOfNums",
         scoreParams: [1],
         desc: "Sum of 1s",
         value: ""
       },
       {
-        id: 1,
+        id: 2,
         name: "Twos",
-        scoring: this.sumOfNums,
+        scoring: "sumOfNums",
         scoreParams: [2],
         desc: "Sum of 2s",
+        value: ""
+      },
+      {
+        id: 3,
+        name: "Threes",
+        scoring: "sumOfNums",
+        scoreParams: [3],
+        desc: "Sum of 3s",
+        value: ""
+      },
+      {
+        id: 4,
+        name: "Fours",
+        scoring: "sumOfNums",
+        scoreParams: [4],
+        desc: "Sum of 4s",
+        value: ""
+      },
+      {
+        id: 5,
+        name: "Fives",
+        scoring: "sumOfNums",
+        scoreParams: [5],
+        desc: "Sum of 5s",
+        value: ""
+      },
+      {
+        id: 6,
+        name: "Sixes",
+        scoring: "sumOfNums",
+        scoreParams: [6],
+        desc: "Sum of 6s",
+        value: ""
+      },
+      {
+        id: 7,
+        name: "Subtotal",
+        scoring: "sumOfScores",
+        scoreParams: [[1,2,3,4,5,6]],
+        desc: "Subtotal of upper half",
+        noclick: true,
+        value: ""
+      },
+      {
+        id: 8,
+        name: "Bonus",
+        scoring: "bonusCheck",
+        scoreParams: [[1,2,3,4,5,6],63,35],
+        desc: "Subtotal >= 63",
+        noclick: true,
+        value: ""
+      },
+      {
+        id: 10,
+        name: "3 of a Kind",
+        scoring: "checkMultis",
+        scoreParams: [[3],"sumOfAll"],
+        desc: "",
+        value: ""
+      },
+      {
+        id: 11,
+        name: "4 of a Kind",
+        scoring: "checkMultis",
+        scoreParams: [[4],"sumOfAll"],
+        desc: "",
+        value: ""
+      },
+      {
+        id: 12,
+        name: "Full House",
+        scoring: "checkMultis",
+        scoreParams: [[2,3],"sumOfAll"],
+        desc: "",
+        value: ""
+      },
+      {
+        id: 13,
+        name: "Small Straight",
+        scoring: "checkStraight",
+        scoreParams: [4, 30],
+        desc: "",
+        value: ""
+      },
+      {
+        id: 14,
+        name: "Large Straight",
+        scoring: "checkStraight",
+        scoreParams: [5, 40],
+        desc: "",
+        value: ""
+      },
+      {
+        id: 15,
+        name: "Yahtzee",
+        scoring: "checkMultis",
+        scoreParams: [[5],50],
+        desc: "",
+        value: ""
+      },
+      {
+        id: 16,
+        name: "Chance",
+        scoring: "sumOfAll",
+        scoreParams: [],
+        desc: "",
+        value: ""
+      },
+      {
+        id: 17,
+        name: "Subtotal",
+        scoring: "sumOfScores",
+        scoreParams: [[10,11,12,13,14,15,16]],
+        desc: "Subtotal of lower half",
+        noclick: true,
+        value: ""
+      },
+      {
+        id: 18,
+        name: "Total",
+        scoring: "sumOfScores",
+        scoreParams: [[1,2,3,4,5,6,8,10,11,12,13,14,15,16]],
+        desc: "",
+        noclick: true,
         value: ""
       }
     ],
@@ -61,6 +187,9 @@ export default class App extends React.Component {
 
   componentWillMount() {
     this.dieRoll();
+  }
+
+  componentDidUpdate(prevProps) {
   }
 
   dieHoldReset = () => {
@@ -110,18 +239,110 @@ export default class App extends React.Component {
     });
   }
 
-  handleScoreClick = (scoreInfo) => {
-    console.log("score clicked");
+  countUp = () => {
+    const { dice } = this.state;
+
+    return dice.reduce((accum, die) => {
+      accum[(die.value - 1)]++;
+
+      return accum;
+    }, [0,0,0,0,0,0]);
+  }
+
+  bonusCheck = (newScores) => {
+    return newScores.map((thisScore) => {
+      return thisScore.scoring == "bonusCheck"
+        ? R.merge(thisScore,
+          {
+            value: this.sumOfScores(thisScore, newScores) >= thisScore.scoreParams[1]
+              ? thisScore.scoreParams[2]
+              : 0
+          })
+        : thisScore;
+    });
+  }
+
+  subtotalIt = (newScores) => {
+    if (newScores) {
+      const bonusScores = this.bonusCheck(newScores);
+      return bonusScores.map((thisScore) => {
+        return thisScore.scoring == "sumOfScores"
+          ? R.merge(thisScore, { value: this.sumOfScores(thisScore, bonusScores)})
+          : thisScore;
+      });
+    }
+
+    return newScores;
+  }
+
+  sumOfScores = (score, newScores) => {
+    return newScores.reduce((accum, thisScore) => {
+      const intValue = parseInt(thisScore.value) ? parseInt(thisScore.value) : 0;
+      return score.scoreParams[0].indexOf(thisScore.id) > -1 ? accum + intValue : accum;
+    }, 0);
+  }
+
+  checkMultis = (score) => {
+    const dieCount = this.countUp();
+
+    if (dieCount.includes(score.scoreParams[0])) {
+      return this.sumOfAll(score);
+    }
+
+    return 0;
+  }
+
+  sumOfNums = (score) => {
+    const { dice } = this.state;
+
+    return dice.reduce((accum, die) => {
+      return die.value == score.scoreParams[0] ? accum + die.value : accum;
+    }, 0);
+  }
+
+  sumOfAll = (score) => {
+    const { dice } = this.state;
+
+    return dice.reduce((accum, die) => {
+      return accum + die.value;
+    }, 0);
+  }
+
+  handleScoreClick = (score) => {
+    const { scores } = this.state;
+
+    const scoreValue = this[score.scoring](score);
+
+    const newScores = this.subtotalIt(scores.map((thisScore) => {
+      return score.id == thisScore.id
+        ? R.merge(thisScore, { value: scoreValue})
+        : thisScore;
+    }));
+
+    this.setState({
+      scores: newScores,
+      roll: -1
+    });
+
+    this.dieRoll();
   }
 
   render() {
-    let { dice, scores } = this.state;
+    let { dice, scores, roll } = this.state;
+
+    const rollHandler = roll >= 2 ? null : this.dieRoll;
+
+
+    const btnClassList = classNames("scores__row", {
+      "is-disabled": roll >= 2
+    });
 
     return(
       <div className="playingboard">
         <div className="column">
           <Dice dice={dice} handleDieHold={ this.handleDieHold } />
-          <Button buttonText="Roll" roll={ this.dieRoll } />
+          <Button btnClassList={btnClassList} buttonText="Roll" roll={ rollHandler } />
+          <p>Roll count: { ( roll + 1 ) }</p>
         </div>
         <div className="column">
           <Scores scores={scores} handleScoreClick={ this.handleScoreClick } />

@@ -1,13 +1,6 @@
+import PropTypes from "prop-types";
 import React from "react";
-import classNames from "classnames";
-
-import { array, func } from "prop-types";
-
-const propTypes = {
-  handleScoreClick: func.isRequired,
-  scores: array
-};
-
+import Score from "./Score.jsx";
 
 const Scores = (props) => {
   const { handleScoreClick, scores } = props;
@@ -24,12 +17,9 @@ const Scores = (props) => {
             {
               scores.map((score, index) =>
                 {
-
-                  const classList = classNames("scores__row", {
-                    "is-entered": score.value != ""
-                  });
-
-                  return (<tr key={index} className={classList} onClick={handleScoreClick}> <td>{ score.name }</td> <td> { score.desc } </td> <td> { score.value } </td> </tr>);
+                  return (
+                    <Score key={ score.id } score={ score } handleScoreClick={ handleScoreClick } />
+                  );
                 }
               )
             }
@@ -39,6 +29,11 @@ const Scores = (props) => {
   );
 };
 
-Scores.propTypes = propTypes;
+const { array, func } = PropTypes;
+
+Scores.propTypes = {
+  handleScoreClick: func.isRequired,
+  scores: array
+};
 
 export default Scores;

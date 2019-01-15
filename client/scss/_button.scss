@@ -9,4 +9,9 @@ button {
 	margin: 14px 8px;
 	padding: 8px;
 	text-transform: uppercase;
+
+  &.is-disabled {
+    cursor: default;
+    opacity: 0.5;
+  }
 }
