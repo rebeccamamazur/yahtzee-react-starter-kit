@@ -1,0 +1,181 @@
+{
+  "dice": [
+    {
+      "id": 1,
+      "value": 1,
+      "held": false
+    },
+    {
+      "id": 2,
+      "value": 2,
+      "held": false
+    },
+    {
+      "id": 3,
+      "value": 3,
+      "held": false
+    },
+    {
+      "id": 4,
+      "value": 4,
+      "held": false
+    },
+    {
+      "id": 5,
+      "value": 5,
+      "held": false
+    }
+  ],
+  "scores": [
+    {
+      "id": 1,
+      "name": "Ones",
+      "scoring": "sumOfNums",
+      "scoreParams": [1],
+      "desc": "Sum of 1s",
+      "value": ""
+    },
+    {
+      "id": 2,
+      "name": "Twos",
+      "scoring": "sumOfNums",
+      "scoreParams": [2],
+      "desc": "Sum of 2s",
+      "value": ""
+    },
+    {
+      "id": 3,
+      "name": "Threes",
+      "scoring": "sumOfNums",
+      "scoreParams": [3],
+      "desc": "Sum of 3s",
+      "value": ""
+    },
+    {
+      "id": 4,
+      "name": "Fours",
+      "scoring": "sumOfNums",
+      "scoreParams": [4],
+      "desc": "Sum of 4s",
+      "value": ""
+    },
+    {
+      "id": 5,
+      "name": "Fives",
+      "scoring": "sumOfNums",
+      "scoreParams": [5],
+      "desc": "Sum of 5s",
+      "value": ""
+    },
+    {
+      "id": 6,
+      "name": "Sixes",
+      "scoring": "sumOfNums",
+      "scoreParams": [6],
+      "desc": "Sum of 6s",
+      "value": ""
+    },
+    {
+      "id": 7,
+      "name": "Subtotal",
+      "scoring": "sumOfScores",
+      "scoreParams": [[1,2,3,4,5,6]],
+      "desc": "Subtotal of upper half",
+      "noclick": true,
+      "value": ""
+    },
+    {
+      "id": 8,
+      "name": "Bonus",
+      "scoring": "bonusCheck",
+      "scoreParams": [[1,2,3,4,5,6],63,35],
+      "desc": "Subtotal ≥ 63",
+      "noclick": true,
+      "value": ""
+    },
+    {
+      "id": 9,
+      "name": "Total, top half",
+      "scoring": "sumOfScores",
+      "scoreParams": [[1,2,3,4,5,6,8]],
+      "desc": "Total of upper half and bonus",
+      "noclick": true,
+      "value": ""
+    },
+    {
+      "id": 10,
+      "name": "3 of a Kind",
+      "scoring": "checkMultis",
+      "scoreParams": [[3,4,5],"sumOfAll", true],
+      "desc": "",
+      "value": ""
+    },
+    {
+      "id": 11,
+      "name": "4 of a Kind",
+      "scoring": "checkMultis",
+      "scoreParams": [[4,5],"sumOfAll", true],
+      "desc": "",
+      "value": ""
+    },
+    {
+      "id": 12,
+      "name": "Full House",
+      "scoring": "checkMultis",
+      "scoreParams": [[2,3],25, false],
+      "desc": "3 of one value and 2 of another",
+      "value": ""
+    },
+    {
+      "id": 13,
+      "name": "Small Straight",
+      "scoring": "checkStraight",
+      "scoreParams": [4, 30],
+      "desc": "",
+      "value": ""
+    },
+    {
+      "id": 14,
+      "name": "Large Straight",
+      "scoring": "checkStraight",
+      "scoreParams": [5, 40],
+      "desc": "",
+      "value": ""
+    },
+    {
+      "id": 15,
+      "name": "Yahtzee",
+      "scoring": "checkMultis",
+      "scoreParams": [[5],50, false],
+      "desc": "5 of a kind",
+      "value": ""
+    },
+    {
+      "id": 16,
+      "name": "Chance",
+      "scoring": "sumOfAll",
+      "scoreParams": [],
+      "desc": "",
+      "value": ""
+    },
+    {
+      "id": 17,
+      "name": "Subtotal",
+      "scoring": "sumOfScores",
+      "scoreParams": [[10,11,12,13,14,15,16]],
+      "desc": "Subtotal of lower half",
+      "noclick": true,
+      "value": ""
+    },
+    {
+      "id": 18,
+      "name": "Total",
+      "scoring": "sumOfScores",
+      "scoreParams": [[1,2,3,4,5,6,8,10,11,12,13,14,15,16]],
+      "desc": "",
+      "noclick": true,
+      "value": ""
+    }
+  ],
+  "roll": -1
+}
