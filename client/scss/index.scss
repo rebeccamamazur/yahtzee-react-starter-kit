@@ -10,7 +10,7 @@ body {
 .playingboard {
   display: flex;
   justify-content: space-between;
-  max-width: 800px;
+  max-width: 900px;
   margin: 100px auto;
 }
 
@@ -20,7 +20,7 @@ body {
   &:last-child {
     margin-right: 0;
     max-width: 70%;
-    width: 400px;
+    width: 500px;
   }
 }
 

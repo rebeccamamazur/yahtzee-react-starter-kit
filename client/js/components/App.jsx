@@ -103,7 +103,16 @@ export default class App extends React.Component {
         name: "Bonus",
         scoring: "bonusCheck",
         scoreParams: [[1,2,3,4,5,6],63,35],
-        desc: "Subtotal >= 63",
+        desc: "Subtotal ≥ 63",
+        noclick: true,
+        value: ""
+      },
+      {
+        id: 9,
+        name: "Total, top half",
+        scoring: "sumOfScores",
+        scoreParams: [[1,2,3,4,5,6,8]],
+        desc: "Total of upper half and bonus",
         noclick: true,
         value: ""
       },
@@ -111,7 +120,7 @@ export default class App extends React.Component {
         id: 10,
         name: "3 of a Kind",
         scoring: "checkMultis",
-        scoreParams: [[3],"sumOfAll"],
+        scoreParams: [[3,4,5],"sumOfAll", true],
         desc: "",
         value: ""
       },
@@ -119,7 +128,7 @@ export default class App extends React.Component {
         id: 11,
         name: "4 of a Kind",
         scoring: "checkMultis",
-        scoreParams: [[4],"sumOfAll"],
+        scoreParams: [[4,5],"sumOfAll", true],
         desc: "",
         value: ""
       },
@@ -127,8 +136,8 @@ export default class App extends React.Component {
         id: 12,
         name: "Full House",
         scoring: "checkMultis",
-        scoreParams: [[2,3],25],
-        desc: "",
+        scoreParams: [[2,3],25, false],
+        desc: "3 of one value and 2 of another",
         value: ""
       },
       {
@@ -151,8 +160,8 @@ export default class App extends React.Component {
         id: 15,
         name: "Yahtzee",
         scoring: "checkMultis",
-        scoreParams: [[5],50],
-        desc: "",
+        scoreParams: [[5],50, false],
+        desc: "5 of a kind",
         value: ""
       },
       {
@@ -288,8 +297,15 @@ export default class App extends React.Component {
   checkMultis = (score) => {
     const dieCount = this.countUp();
 
-    if (score.scoreParams[0].every(val =>  dieCount.includes(val))) {
-      return score.scoreParams[1] == "sumOfAll" ? this.sumOfAll(score) : score.scoreParams[1];
+    if (score.scoreParams[2]) {
+      if (score.scoreParams[0].some(val =>  dieCount.includes(val))) {
+        return score.scoreParams[1] == "sumOfAll" ? this.sumOfAll(score) : score.scoreParams[1];
+      }
+    }
+    else {
+      if (score.scoreParams[0].every(val =>  dieCount.includes(val))) {
+        return score.scoreParams[1] == "sumOfAll" ? this.sumOfAll(score) : score.scoreParams[1];
+      }
     }
 
     return 0;
