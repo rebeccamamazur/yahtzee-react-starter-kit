@@ -2,9 +2,7 @@ import React from "react";
 import R from "ramda";
 import classNames from "classnames";
 
-import Button from "./Button/Button.jsx";
-import Dice from "./Dice/Dice.jsx";
-import Scores from "./Scores/Scores.jsx";
+/* TODO: Import React components! */
 
 export default class App extends React.Component {
 
@@ -15,26 +13,12 @@ export default class App extends React.Component {
   };
 
   /* ----------- React Life Cycle ----------- */
-
   componentWillMount() {
-    fetch("./json/init.json")
-      .then( (response) => {
-        if (!response.ok) {
-          return {
-            error: "There has been an error contacting the server. Server responded with: " + response.statusText
-          };
-        }
-        return response.json();
-      })
-      .then((json) => {
-        this.setState(json);
-      });
+    /* TODO: Fetch initialization values */
   }
 
   componentDidUpdate(prevProps) {
-    if (this.state.roll === -1) {
-      this.dieRoll(true);
-    }
+    /* TODO: roll?  Yeah, probably roll. */
   }
 
   /* ----------- Yahtzee Behaviors ----------- */
@@ -156,77 +140,14 @@ export default class App extends React.Component {
   }
 
   /* ----------- Click Handlers ----------- */
-  dieRoll = (reset) => {
-    const { dice, roll } = this.state;
+  /* TODO: dieRoll */
 
-    this.setState({
-      dice: dice.map(function(die) {
-        return die.held && !reset && roll < 2
-          ? die
-          : {
-            id: die.id,
-            value: Math.ceil((Math.random() * 6)),
-            held: false
-          };
-      }),
-      roll: (roll + 1) % 3
-    });
-  }
+  /* TODO: handleDieHold */
 
-  handleDieHold = (did) => {
-    const { dice } = this.state;
-
-    this.setState({
-      dice: dice.map(function(die) {
-        return die.id === did
-          ? {
-            id: die.id,
-            value: die.value,
-            held: !die.held
-          }
-          : die;
-      })
-    });
-  }
-
-  handleScoreClick = (score) => {
-    const { scores } = this.state;
-
-    const scoreValue = this[score.scoring](score);
-
-    const newScores = this.subtotalIt(scores.map((thisScore) => {
-      return score.id == thisScore.id
-        ? R.merge(thisScore, { value: scoreValue})
-        : thisScore;
-    }));
-
-    this.setState({
-      scores: newScores,
-      roll: -1
-    });
-  }
+  /* TODO: handleScoreClick */
 
   /* ----------- Render ----------- */
   render() {
-    let { dice, scores, roll } = this.state;
-
-    const rollHandler = roll >= 2 ? null : this.dieRoll;
-
-    const btnClassList = classNames("scores__row", {
-      "is-disabled": roll >= 2
-    });
-
-    return(
-      <div className="playingboard">
-        <div className="column">
-          <Dice dice={dice} handleDieHold={ this.handleDieHold } />
-          <Button btnClassList={btnClassList} buttonText="Roll" roll={ rollHandler } />
-          <p>Roll count: { ( roll + 1 ) }</p>
-        </div>
-        <div className="column">
-          <Scores scores={scores} handleScoreClick={ this.handleScoreClick } />
-        </div>
-      </div>
-    );
+    return(<div></div>);
   }
 }
