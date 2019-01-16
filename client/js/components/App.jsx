@@ -8,9 +8,6 @@ import Scores from "./Scores/Scores.jsx";
 
 export default class App extends React.Component {
 
-  static propTypes = {
-  };
-
   state = {
     dice: [],
     scores: [],
