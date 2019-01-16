@@ -1,14 +1,6 @@
+import PropTypes from "prop-types";
 import React from "react";
-
 import Die from "./Die.jsx";
-
-import { array, func } from "prop-types";
-
-const propTypes = {
-  dice: array,
-  handleDieHold: func.isRequired
-};
-
 
 const Dice = (props) => {
   const { dice, handleDieHold } = props;
@@ -20,6 +12,11 @@ const Dice = (props) => {
   );
 };
 
-Dice.propTypes = propTypes;
+const { array, func } = PropTypes;
+
+Dice.propTypes = {
+  dice: array,
+  handleDieHold: func.isRequired
+};
 
 export default Dice;

@@ -122,23 +122,6 @@ export default class App extends React.Component {
     });
   }
 
-  dieRoll = (reset) => {
-    const { dice, roll } = this.state;
-
-    this.setState({
-      dice: dice.map(function(die) {
-        return die.held && !reset && roll < 2
-          ? die
-          : {
-            id: die.id,
-            value: Math.ceil((Math.random() * 6)),
-            held: false
-          };
-      }),
-      roll: (roll + 1) % 3
-    });
-  }
-
   subtotalIt = (newScores) => {
     if (newScores) {
       const bonusScores = this.bonusCheck(newScores);
@@ -176,6 +159,23 @@ export default class App extends React.Component {
   }
 
   /* ----------- Click Handlers ----------- */
+  dieRoll = (reset) => {
+    const { dice, roll } = this.state;
+
+    this.setState({
+      dice: dice.map(function(die) {
+        return die.held && !reset && roll < 2
+          ? die
+          : {
+            id: die.id,
+            value: Math.ceil((Math.random() * 6)),
+            held: false
+          };
+      }),
+      roll: (roll + 1) % 3
+    });
+  }
+
   handleDieHold = (did) => {
     const { dice } = this.state;
 

@@ -1,12 +1,5 @@
+import PropTypes from "prop-types";
 import React from "react";
-
-import { func, string } from "prop-types";
-
-const propTypes = {
-  buttonText: string,
-  btnClassList: string,
-  roll: func
-};
 
 
 const Button = (props) => {
@@ -21,6 +14,12 @@ const Button = (props) => {
   return( <button className={btnClassList} onClick={handleRoll}>{ buttonText }</button>);
 };
 
-Button.propTypes = propTypes;
+const { func, string } = PropTypes;
+
+Button.propTypes = {
+  buttonText: string,
+  btnClassList: string,
+  roll: func
+};
 
 export default Button;

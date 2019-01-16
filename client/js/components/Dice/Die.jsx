@@ -1,15 +1,6 @@
+import PropTypes from "prop-types";
 import React from "react";
 import classNames from "classnames";
-
-import { bool, func, number } from "prop-types";
-
-const propTypes = {
-  handleDieHold: func.isRequired,
-  held: bool,
-  id: number,
-  value: number
-};
-
 
 const Die = (props) => {
   const { handleDieHold, held, id, value } = props;
@@ -17,8 +8,6 @@ const Die = (props) => {
   const classList = classNames("die", {
     "die--held": held
   });
-
-
 
   return(
     <div className={classList} onClick={ () => handleDieHold(id) }>
@@ -32,6 +21,13 @@ const Die = (props) => {
     </div> );
 };
 
-Die.propTypes = propTypes;
+const { bool, func, number } = PropTypes;
+
+Die.propTypes = {
+  handleDieHold: func.isRequired,
+  held: bool,
+  id: number,
+  value: number
+};
 
 export default Die;
