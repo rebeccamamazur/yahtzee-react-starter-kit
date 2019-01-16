@@ -127,7 +127,7 @@ export default class App extends React.Component {
         id: 12,
         name: "Full House",
         scoring: "checkMultis",
-        scoreParams: [[2,3],"sumOfAll"],
+        scoreParams: [[2,3],25],
         desc: "",
         value: ""
       },
@@ -186,10 +186,13 @@ export default class App extends React.Component {
   };
 
   componentWillMount() {
-    this.dieRoll();
+    this.dieRoll(true);
   }
 
   componentDidUpdate(prevProps) {
+    if (this.state.roll === -1) {
+      this.dieRoll(true);
+    }
   }
 
   dieHoldReset = () => {
@@ -206,12 +209,12 @@ export default class App extends React.Component {
     });
   }
 
-  dieRoll = () => {
+  dieRoll = (reset) => {
     const { dice, roll } = this.state;
 
     this.setState({
       dice: dice.map(function(die) {
-        return die.held && roll < 2
+        return die.held && !reset && roll < 2
           ? die
           : {
             id: die.id,
@@ -285,11 +288,28 @@ export default class App extends React.Component {
   checkMultis = (score) => {
     const dieCount = this.countUp();
 
-    if (dieCount.includes(score.scoreParams[0])) {
-      return this.sumOfAll(score);
+    if (score.scoreParams[0].every(val =>  dieCount.includes(val))) {
+      return score.scoreParams[1] == "sumOfAll" ? this.sumOfAll(score) : score.scoreParams[1];
     }
 
     return 0;
+  }
+
+  checkStraight = (score) => {
+    const dieCount = this.countUp();
+
+    const inARow = dieCount.reduce((accum, num) => {
+      if (num > 0 && accum.prev > 0) {
+        accum.inarow++;
+      }
+      else if (accum.inarow < score.scoreParams[0]) {
+        accum.inarow = 0;
+      }
+
+      return accum;
+    }, {"inarow": 0, "prev": 1});
+
+    return inARow.inarow === score.scoreParams[0] ? score.scoreParams[1] : 0;
   }
 
   sumOfNums = (score) => {
@@ -323,8 +343,6 @@ export default class App extends React.Component {
       scores: newScores,
       roll: -1
     });
-
-    this.dieRoll();
   }
 
   render() {
