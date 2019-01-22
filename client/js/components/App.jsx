@@ -13,7 +13,7 @@ export default class App extends React.Component {
   };
 
   /* ----------- React Life Cycle ----------- */
-  componentWillMount() {
+  componentDidMount() {
     /* TODO: Fetch initialization values */
   }
 
