@@ -76,7 +76,7 @@ export default class App extends React.Component {
       return accum;
     }, {"inarow": 0, "prev": 1});
 
-    return inARow.inarow === score.scoreParams[0] ? score.scoreParams[1] : 0;
+    return inARow.inarow >= score.scoreParams[0] ? score.scoreParams[1] : 0;
   }
 
   countUp = () => {
