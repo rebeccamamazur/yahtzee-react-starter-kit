@@ -145,6 +145,10 @@ export default class App extends React.Component {
   /* TODO: handleDieHold */
 
   /* TODO: handleScoreClick */
+  // Hint: destructure scores
+  // Hint: call the score helpers this[score.scoring](score) to get a score value
+  // Hint: create a new array of scores
+  // Hint: set state
 
   /* ----------- Render ----------- */
   render() {
