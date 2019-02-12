@@ -3,6 +3,9 @@ import R from "ramda";
 import classNames from "classnames";
 
 /* TODO: Import React components! */
+import Button from "./Button/Button.jsx";
+import Dice from "./Dice/Dice.jsx";
+import Scores from "./Scores/Scores.jsx";
 
 export default class App extends React.Component {
 
@@ -15,10 +18,18 @@ export default class App extends React.Component {
   /* ----------- React Life Cycle ----------- */
   componentDidMount() {
     /* TODO: Fetch initialization values */
+    fetch("./json/init.json")
+      .then((response) => response.json())
+      .then((json) =>
+       {
+         this.setState(json);
+       });
   }
 
   componentDidUpdate(prevProps) {
-    /* TODO: roll?  Yeah, probably roll. */
+    if (this.state.roll === -1) {
+      this.dieRoll(true);
+    }
   }
 
   /* ----------- Yahtzee Behaviors ----------- */
@@ -141,17 +152,75 @@ export default class App extends React.Component {
 
   /* ----------- Click Handlers ----------- */
   /* TODO: dieRoll */
+  dieRoll = (reset) => {
+    const { dice, roll } = this.state;
+
+    this.setState({
+      dice: dice.map((die) => {
+        return die.held && roll < 2 && !reset
+          ? die
+          : {
+            id: die.id,
+            held: false,
+            value: Math.ceil(Math.random() * 6)
+          };
+      }),
+      roll: (roll + 1) % 3
+    });
+  };
 
   /* TODO: handleDieHold */
+  handleDieHold = (id) => {
+    const { dice } = this.state;
+
+    this.setState({
+      dice: dice.map((die) => {
+        return die.id === id
+          ? {
+            id: die.id,
+            value: die.value,
+            held: !die.held
+          }
+          : die;
+      })
+    });
+  };
 
   /* TODO: handleScoreClick */
-  // Hint: destructure scores
-  // Hint: call the score helpers this[score.scoring](score) to get a score value
-  // Hint: create a new array of scores
-  // Hint: set state
+  handleScoreClick = (score) => {
+    const { scores } = this.state;
+
+    const scoreValue = this[score.scoring](score);
+
+    const newScores = this.subtotalIt(scores.map((thisScore) => {
+      return score.id === thisScore.id
+        ? R.merge(thisScore, { value: scoreValue })
+        : thisScore;
+    }));
+
+    this.setState({
+      scores: newScores,
+      roll: -1
+    });
+  }
 
   /* ----------- Render ----------- */
   render() {
-    return(<div></div>);
+    const { dice, roll, scores } = this.state;
+
+    const handleDieRoll = roll >= 2 ? null : this.dieRoll;
+
+    return(
+      <div className="playingboard">
+        <div className="column">
+          <Dice dice={ dice } handleDieHold={this.handleDieHold} />
+          <Button handleClick={ handleDieRoll } buttonText="Roll" />
+          <p>Roll count: { roll + 1 }</p>
+        </div>
+        <div className="column">
+          <Scores scores={ scores } handleScoreClick={ this.handleScoreClick } />
+        </div>
+      </div>
+    );
   }
 }
